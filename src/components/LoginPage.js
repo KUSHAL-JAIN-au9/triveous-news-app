@@ -3,38 +3,59 @@ import { app } from "@/firebase.config";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { isAuthenticated, setUser } from "@/redux/users/userSlice";
 
 const LoginPage = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-  console.log("firebase", app);
+  const [error, setError] = useState("");
+  const users = useSelector((state) => state.userReducer.users);
+  console.log("state", users);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("hii");
+    if (users?.isAuthenticated) {
+      console.log("hii authenticated");
+      router.push("/News");
+    }
+  }, [users]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     console.log({ email, password });
-
-    // const auth = getAuth();
-    // createUserWithEmailAndPassword(auth, email, password)
-    //   .then((userCredential) => {
-    //     // Signed up
-    //     const user = userCredential.user;
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // ..
-    //   });
-
-    setemail("");
-    setpassword("");
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const { email, accessToken, uid } = userCredential.user;
+        // ...
+        dispatch(setUser({ email, accessToken, uid }));
+        dispatch(isAuthenticated());
+        setemail("");
+        setpassword("");
+        setError("");
+        console.log("Authent", user);
+        // router.push("/News", { scroll: false });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorCode);
+      });
   };
 
   return (
-    <div className="w-96 ">
-      <h1 className="text-center font-bold text-lg p-10">Login </h1>
+    <>
+      <h1 className="text-center font-bold text-lg p-2">Login Page </h1>
+      <span className="p-2 text-center text-red-600 text-xl">
+        {error ? error : ""}
+      </span>
       <form
         class="max-w-sm mx-auto  w-full h-80 bg-white rounded-xl p-10"
         onSubmit={handleSubmit}
@@ -102,7 +123,7 @@ const LoginPage = () => {
           Sign Up
         </Link>
       </p>
-    </div>
+    </>
   );
 };
 

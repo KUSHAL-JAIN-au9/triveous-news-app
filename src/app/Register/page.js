@@ -4,12 +4,14 @@ import React, { useState } from "react";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/firebase.config";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [error, setError] = useState("");
 
+  const router = useRouter();
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -23,6 +25,8 @@ const page = () => {
         // ...
         setemail("");
         setpassword("");
+        setError("");
+        router.push("/", { scroll: false });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -35,9 +39,9 @@ const page = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-center font-bold text-lg p-10">Sign Up </h1>
-      <span className=" p-10 text-center text-red-600 text-xl">
+    <div className="flex min-h-screen flex-col items-center justify-between p-14">
+      <h1 className="text-center font-bold text-lg p-2">Sign Up Page</h1>
+      <span className=" p-2 text-center text-red-600 text-xl">
         {error ? error : ""}
       </span>
       <form

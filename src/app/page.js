@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { Dropdown, Navbar } from "flowbite-react";
 import LoginPage from "@/components/LoginPage";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-10">
       {/* <h1>heading</h1> */}
       <LoginPage />
 
