@@ -39,6 +39,7 @@ async function getData(name) {
 export default async function Page({ params }) {
   console.log("params", params);
   const data = await getData(params?.slug.replace(/%20/g, " "));
+
   return (
     <div className="w-full h-[90vh]  grid place-items-center">
       <div className="w-full h-[30rem]  max-w-2xl my-10 mx-5  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -105,14 +106,6 @@ export default async function Page({ params }) {
               {data?.content}
             </span>
 
-            {/* <span class=" w-full flex items-center text-sm font-medium text-gray-500 dark:text-gray-400">
-              <span class="flex w-2.5 h-2.5 ml-2 bg-blue-600 rounded-full mr-1.5 flex-shrink-0 "></span>{" "}
-              <strong className="font-bold text-slate-800 pr-2">
-                published At:
-              </strong>
-              {data?.publishedAt}
-            </span> */}
-
             <span class=" w-full flex items-center text-sm font-medium text-gray-500 dark:text-gray-400">
               <span class="flex w-2.5 h-2.5 ml-2 bg-blue-600 rounded-full mr-1.5 flex-shrink-0"></span>
               <strong className="font-bold text-slate-800 pr-2">URL:</strong>
@@ -123,19 +116,6 @@ export default async function Page({ params }) {
                 {data.url}
               </Link>
             </span>
-
-            {/* <span className=" w-full text-lg font-semibold text-black-500 dark:text-gray-400">
-          Warehouse Code: {Warehouse.code}
-        </span>
-        <span className="text-lg font-semibold text-black-500 dark:text-gray-400">
-          Space Available: {Warehouse.space_available}
-        </span>
-        <span className="text-lg font-semibold text-black-500 dark:text-gray-400">
-          Cluster: {Warehouse.cluster}
-        </span>
-        <span className="text-lg font-semibold text-black-500 dark:text-gray-400">
-          City: {Warehouse.city}
-        </span> */}
           </div>
         </div>
       </div>
